@@ -24,7 +24,7 @@ app.listen(port, function () {
 
 app.get('/submitMovieJson', function (req, res) {
   var movieJson = req.param('movieJson');
-  console.log(" Movie Json Received in Server ********** " + movieJson);
+  console.log("movieJson "+ movieJson);
   res.send("Success in submission");
 });
 

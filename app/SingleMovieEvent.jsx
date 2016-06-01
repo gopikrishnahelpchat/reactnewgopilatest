@@ -14,16 +14,28 @@ var SingleMovieEvent = React.createClass({
     },
 
     componentDidMount:function () {
-        this.refs.orderRef.value = this.props.item.order;
-        this.refs.ratingRef.value = this.props.item.rating;
+        /*this.refs.orderRef.value = this.props.item.order;
+        this.refs.ratingRef.value = this.props.item.rating;*/
         // alert('componenet didmount');
+        var position = this.props.item.position;
+        document.getElementById("order"+position).value = this.props.item.order;
+        document.getElementById("rating"+position).value = this.props.item.rating;
     },
     componentWillReceiveProps:function () {
-        this.refs.orderRef.value = this.props.item.order;
-        this.refs.ratingRef.value = this.props.item.rating;
+        var position = this.props.item.position;
+        console.log("position " + position + " changing order to " + this.props.item.order);
+        document.getElementById("order"+position).value = this.props.item.order;
+        document.getElementById("rating"+position).value = this.props.item.rating;
+        // this.refs.orderRef.value = this.props.item.order;
+        // this.refs.ratingRef.value = this.props.item.rating;
         // alert("will Receive");
     },
-
+    idGenerator:function (id) {
+        return "rating" + id;
+    },
+    idOrderGenerator:function (id) {
+        return "order" + id;
+    },
     render: function () {
         return (
             <div style={{"padding": "20px 20px 30px 50px"}}>
@@ -72,11 +84,11 @@ var SingleMovieEvent = React.createClass({
                     </div>
                     <div className="row" style={{"paddingBottom": "10px"}}>
                         <div className="col-md-12">
-                            Rating &nbsp;: &nbsp;&nbsp;&nbsp;  <input type="number" ref="ratingRef" value={this.props.item.rating}  onChange={(e) => this.props.onRatingChanged(this.props.item.position, e)}/>
+                            Rating &nbsp;: &nbsp;&nbsp;&nbsp;  <input type="number" id={this.idGenerator(this.props.item.position)} step="0.50" onChange={(e) => this.props.onRatingChanged(this.props.item.position, e)}/>
                         </div>
                     </div><div className="row" style={{"paddingBottom": "10px"}}>
                         <div className="col-md-12">
-                            Order &nbsp;: &nbsp;&nbsp;&nbsp;  <input type="number" ref="orderRef" value={this.props.item.order}  onChange={(e) => this.props.onOrderChanged(this.props.item.position, e)} />
+                            Order &nbsp;: &nbsp;&nbsp;&nbsp;  <input type="number" id={this.idOrderGenerator(this.props.item.position)} onChange={(e) => this.props.onOrderChanged(this.props.item.position, e)} />
                         </div>
                     </div>
 

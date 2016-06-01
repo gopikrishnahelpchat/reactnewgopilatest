@@ -88,6 +88,14 @@ var XmlParent = React.createClass({
             eventElement["order"] = 0;
             eventsJson.push(eventElement);
         }
+        /*eventsJson.sort(function(a,b){
+            var dateStringFirst = a.Event_strReleaseDate;
+            var dateStringSecond = b.Event_strReleaseDate;
+            var c = new Date(dateStringFirst);
+            var d = new Date(dateStringSecond);
+            return c-d;
+        });*/
+
         this.setState({
             eventsStateJson: eventsJson
         });
@@ -123,9 +131,10 @@ var XmlParent = React.createClass({
                 return;
             }
         }
+        var json = JSON.stringify(this.state.eventsStateJson);
         alert("Success submitting to server ");
 
-        axios.get("http://localhost:3000/submitMovieJson?movieJson=" + this.state.eventsStateJson , {
+        axios.get("http://localhost:3000/submitMovieJson?movieJson=" + json , {
                 headers: {
                     'X-AKOSHA-AUTH': 'eyJ1c2VyX25hbWUiOm51bGwsImlkIjo0NzU2MjcsIm1vYmlsZSI6Ijk5NzIzNjA2MDYiLCJleHBpcmVzIjoxNzc5MDIwOTg1MDcxfQ==.hheyv5gZTc/sxAoGLiZp/MiDxq8ebwRme0wR4y1bKso=',
                     'Access-Control-Allow-Origin': '*'
@@ -162,19 +171,12 @@ var XmlParent = React.createClass({
             temp.push(events[i]);
         }
         temp.sort(function (a, b) {
-            return a["order"] < b["order"];
+            return parseInt(a["order"]) < parseInt(b["order"]);
         });
         for(i=0;i<temp.length;i++) {
-            console.log("order " + temp[i].order + " title " + temp[i].Event_strTitle);
+            temp[i].position = i; //Now change the position of individual Items also
+            console.log("order " + temp[i].order + " title " + temp[i].Event_strTitle + " position "+ temp[i].position);
         }
-        // console.log(sortedArray);
-       /* Array.prototype.sortBy = function(p) {
-            return this.slice(0).sort(function(a,b) {
-                return (a[p] > b[p]) ? 1 : (a[p] < b[p]) ? -1 : 0;
-            });
-        };
-        var sortedArray = events.sortBy('order'); */
-
         console.log(temp);
         this.setState({eventsStateJson : temp});
         this.forceUpdate();
